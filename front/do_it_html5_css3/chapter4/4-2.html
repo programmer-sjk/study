@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <fieldset>
+        <legend>신청자</legend>
+        <form>
+            <input type="text" autofocus placeholder="아이디" size="5" minlength="2" maxlength="5">
+            <input type="text" value="읽기전용" readonly>
+            <input type="submit" value="제출">
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>Select</legend>
+        <form>
+            <select size="3">
+                <option value="s">서정국</option>
+                <option value="b">방쟁이</option>
+                <option value="y">양로치</option>
+                <option value="c" selected>최리포터</option>
+                <option value="j">조뚠뚠</option>
+                <option value="l">Lee대준동무</option>
+            </select>
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>datalist</legend>
+        <input type="text" list="data">
+        <datalist id="data">
+            <option>안녕</option>
+            <option>방가</option>
+            <option>평일에</option>
+            <option>공부중</option>
+            <option>히히히</option>
+            <option>호호호</option>
+        </datalist>
+    </fieldset>
+
+    <fieldset>
+        <legend>Progess</legend>
+        <ul>
+            <li>
+                <label>10초 남음</label>
+                <progress value="40" max="60"></progress>
+            </li>
+        </ul>
+    </fieldset>
+
+    <fieldset>
+        <legend>Meter</legend>
+        <ul>
+            <li>
+                <label>점유율</label>
+                <meter value="0.8"></meter>
+            </li>
+
+            <li>
+                <label>사용량 64%</label>
+                <meter value="64" min="0" max="100"></meter>
+            </li>
+
+            <li>
+                <label>트래픽초과</label>
+                <meter min="1024" max="10240" low="2048" high="8192" value="1800"></meter>
+            </li>
+        </ul>
+    </fieldset>
+</body>
+</html>
