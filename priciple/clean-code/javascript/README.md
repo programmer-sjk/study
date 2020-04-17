@@ -3,13 +3,17 @@
 ## Introduction
 * 이 글은 clean-code-javascript를 단순히 보는 것보다는 정리하는게 저 자신에게 좋다고 판단하여 만든 것입니다.
 * 이 글의 [영어 원문](https://github.com/ryanmcdermott/clean-code-javascript) 과 [한글 번역](https://github.com/qkraudghgh/clean-code-javascript-ko) 을 기반으로 합니다.
-* 원문 양식에서 저에게 불 필요한 부분을 생략하고 필요한 부분만 정리합니다.
+* 원문 양식에서 익숙치 않은 부분은 생략하고 확실히 이해한 부분만 정리합니다. (소개, SOLID, 테스트, 번역 제외)
 
 ## 목차
   1. [변수(Variables)](#변수variables)
   2. [함수(Functions)](#함수functions)
-  3. [Objects and Data Structures](#objects-and-data-structures)
-  4. [Classes](#classes)
+  3. [객체와 자료구조(Objects and Data Structures)](#객체와-자료구조objects-and-data-structures)
+  4. [클래스(Classes)](#클래스classes)
+  5. [동시성(Concurrency)](#동시성concurrency)
+  6. [에러 처리(Error Handling)](#에러-처리error-handling)
+  7. [포맷팅(Formatting)](#포맷팅formatting)
+  8. [주석(Comments)](#주석comments)
   
 
 ## **변수(Variables)**
@@ -760,7 +764,7 @@ const req = newRequestModule;
 inventoryTracker("apples", req, "www.inventory-awesome.io");
 ```
 
-## **Objects and Data Structures**
+## **객체와 자료구조(Objects and Data Structures)**
 
 ### getter와 setter를 사용하세요
 JavaScript는 인터페이스와 타입을 가지고있지 않고 이러한 패턴을 적용하기가 힘듭니다. 왜냐하면 public이나 private같은 키워드가 없기 때문이죠. 그렇기 때문에 getter 및 setter를 사용하여 객체의 데이터에 접근하는 것이 객체의 속성을 찾는 것보다 훨씬 낫습니다. "왜요?"라고 물으실 수도 있겠습니다. 왜 그런지에 대해서 몇 가지 이유를 두서없이 적어봤습니다.
@@ -853,7 +857,7 @@ delete employee.name;
 console.log(`Employee name: ${employee.getName()}`); // Employee name: John Doe
 ```
 
-## **Classes**
+## **클래스(Classes)**
 
 ### ES5의 함수보다 ES2015/ES6의 클래스를 사용하세요
 기존 ES5의 클래스에서 이해하기 쉬운 상속, 구성 및 메소드 정의를 하는 건 매우 어렵습니다. 매번 그런것은 아니지만 상속이 필요한 경우라면 클래스를 사용하는 것이 좋습니다. 하지만 당신이 크고 더 복잡한 객체가 필요한 경우가 아니라면 클래스보다 작은 함수를 사용하세요.
@@ -1059,3 +1063,384 @@ class Employee {
   // ...
 }
 ```
+
+## **동시성(Concurrency)**
+
+### Callback 대신 Promise를 사용하세요
+Callback은 깔끔하지 않고, 수 많은 중괄호 중첩을 만들어 냅니다. ES2015/ES6에선 Promise가 내장되어 있습니다. 이걸 쓰세요!
+
+**Bad:** 
+```javascript
+import { get } from "request";
+import { writeFile } from "fs";
+
+get(
+  "https://en.wikipedia.org/wiki/Robert_Cecil_Martin",
+  (requestErr, response, body) => {
+    if (requestErr) {
+      console.error(requestErr);
+    } else {
+      writeFile("article.html", body, writeErr => {
+        if (writeErr) {
+          console.error(writeErr);
+        } else {
+          console.log("File written");
+        }
+      });
+    }
+  }
+);
+```
+
+**Good:** 
+```javascript
+import { get } from "request-promise";
+import { writeFile } from "fs-extra";
+
+get("https://en.wikipedia.org/wiki/Robert_Cecil_Martin")
+  .then(body => {
+    return writeFile("article.html", body);
+  })
+  .then(() => {
+    console.log("File written");
+  })
+  .catch(err => {
+    console.error(err);
+  });
+```
+
+## Async/Await은 Promise보다 더욱 깔끔합니다
+Promise도 Callback에 비해 정말 깔끔하지만 ES2017/ES8에선 async와 await이 있습니다. 이들은 Callback에대한 더욱 깔끔한 해결책을 줍니다. 오직 필요한 것은 함수앞에 async를 붙이는 것 뿐입니다. 그러면 함수를 논리적으로 연결하기위해 더이상 then을 쓰지 않아도 됩니다. 만약 당신이 ES2017/ES8 사용할 수 있다면 이것을 사용하세요!
+
+**Bad:** 
+```javascript
+import { get } from "request-promise";
+import { writeFile } from "fs-extra";
+
+get("https://en.wikipedia.org/wiki/Robert_Cecil_Martin")
+  .then(body => {
+    return writeFile("article.html", body);
+  })
+  .then(() => {
+    console.log("File written");
+  })
+  .catch(err => {
+    console.error(err);
+  });
+```
+
+**Good:** 
+```javascript
+import { get } from "request-promise";
+import { writeFile } from "fs-extra";
+
+async function getCleanCodeArticle() {
+  try {
+    const body = await get(
+      "https://en.wikipedia.org/wiki/Robert_Cecil_Martin"
+    );
+    await writeFile("article.html", body);
+    console.log("File written");
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+getCleanCodeArticle()
+```
+
+## **에러 처리(Error Handling)**
+
+에러를 뱉는다는 것은 좋은 것입니다! 즉, 프로그램에서 무언가가 잘못되었을 때 런타임에서 성공적으로 확인되면 현재 스택에서 함수 실행을 중단하고 (노드에서) 프로세스를 종료하고 스택 추적으로 콘솔에서 사용자에게 그 이유를 알려줍니다.
+
+## 발견된 에러를 무시하지 마세요.
+단순히 에러를 확인하는 것만으로 그 에러가 해결되거나 대응 할 수 있게 되는 것은 아닙니다. console.log를 통해 콘솔에 로그를 기록하는 것은 에러 로그를 잃어버리기 쉽기 때문에 좋은 방법이 아닙니다. 만약에 try/catch로 어떤 코드를 감쌌다면 그건 당신이 그 코드에 어떤 에러가 날지도 모르기 때문에 감싼 것이므로 그에대한 계획이 있거나 어떠한 장치를 해야합니다.
+
+**Bad:** 
+```javascript
+try {
+  functionThatMightThrow();
+} catch (error) {
+  console.log(error);
+}
+```
+
+**Good:** 
+```javascript
+try {
+  functionThatMightThrow();
+} catch (error) {
+  // 첫번째 방법은 console.error를 이용하는 것입니다. 이건 console.log보다 조금 더 알아채기 쉽습니다.
+  console.error(error);
+  // 다른 방법은 유저에게 알리는 방법입니다.
+  notifyUserOfError(error);
+  // 또 다른 방법은 서비스 자체에 에러를 기록하는 방법입니다.
+  reportErrorToService(error);
+  // 혹은 그 어떤 방법이 될 수 있습니다.
+}
+```
+
+## Promise가 reject 된 것을 무시하지 마세요
+위와 동일한 이유입니다.
+
+**Bad:** 
+```javascript
+getdata()
+  .then(data => {
+    functionThatMightThrow(data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+```
+
+**Good:** 
+```javascript
+getdata()
+  .then(data => {
+    functionThatMightThrow(data);
+  })
+  .catch(error => {
+    // One option (more noisy than console.log):
+    console.error(error);
+    // Another option:
+    notifyUserOfError(error);
+    // Another option:
+    reportErrorToService(error);
+    // OR do all three!
+  });
+```
+
+## **포맷팅(Formatting)**
+Formatting은 주관적입니다. 많은 규칙처럼 반드시 따라야 할 강력한 규칙은 없습니다. 중요한 것은 포맷팅에 대해 과도하게 신경쓰지 말라는 것입니다.  포맷팅 체크를 자동으로 해주는 [많은 도구들](http://standardjs.com/rules.html)이 있기 때문입니다. 이중 하나를 골라 사용하세요. 개발자들끼리 포맷팅에대해 논쟁하는 것만큼 시간과 돈을 낭비하는 것이 없습니다.
+
+자동으로 서식을 교정해주는 것(들여쓰기, 탭이냐 스페이스냐, 작은 따옴표냐 큰따옴표냐)에 해당하지 않는 사항에 대해서는 몇가지 지침을 따르는 것이 좋습니다.
+
+### 일관된 대소문자를 사용하세요
+JavaScript에는 정해진 타입이 없기 때문에 대소문자를 구분하는 것으로 당신의 변수나 함수명 등에서 많은 것을 알 수 있습니다. 이 규칙 또한 주관적이기 때문에 당신이 팀이 선택한 규칙들을 따르세요 중요한건 항상 일관성 있게 사용해야 한다는 것입니다.
+
+**Bad:** 
+```javascript
+const DAYS_IN_WEEK = 7;
+const daysInMonth = 30;
+
+const songs = ['Back In Black', 'Stairway to Heaven', 'Hey Jude'];
+const Artists = ['ACDC', 'Led Zeppelin', 'The Beatles'];
+
+function eraseDatabase() {}
+function restore_database() {}
+
+class animal {}
+class Alpaca {}
+```
+
+**Good:** 
+```javascript
+const DAYS_IN_WEEK = 7;
+const DAYS_IN_MONTH = 30;
+
+const songs = ['Back In Black', 'Stairway to Heaven', 'Hey Jude'];
+const artists = ['ACDC', 'Led Zeppelin', 'The Beatles'];
+
+function eraseDatabase() {}
+function restoreDatabase() {}
+
+class Animal {}
+class Alpaca {}
+```
+
+### 함수 호출자와 함수 피호출자는 가깝게 위치시키세요
+함수가 다른 함수를 호출하면 그 함수들은 소스 파일 안에서 수직으로 가까워야 합니다. 이상적으로는 함수 호출자를 함수 피호출자 바로 위에 위치시켜야 합니다. 우리는 코드를 읽을때 신문을 읽듯 위에서 아래로 읽기 때문에 코드를 작성 할 때도 읽을 때를 고려하여 작성 해야합니다.
+
+**Bad:** 
+```javascript
+class PerformanceReview {
+  constructor(employee) {
+    this.employee = employee;
+  }
+
+  lookupPeers() {
+    return db.lookup(this.employee, "peers");
+  }
+
+  lookupManager() {
+    return db.lookup(this.employee, "manager");
+  }
+
+  getPeerReviews() {
+    const peers = this.lookupPeers();
+    // ...
+  }
+
+  perfReview() {
+    this.getPeerReviews();
+    this.getManagerReview();
+    this.getSelfReview();
+  }
+
+  getManagerReview() {
+    const manager = this.lookupManager();
+  }
+
+  getSelfReview() {
+    // ...
+  }
+}
+
+const review = new PerformanceReview(employee);
+review.perfReview();
+```
+
+**Good:** 
+```javascript
+class PerformanceReview {
+  constructor(employee) {
+    this.employee = employee;
+  }
+
+  perfReview() {
+    this.getPeerReviews();
+    this.getManagerReview();
+    this.getSelfReview();
+  }
+
+  getPeerReviews() {
+    const peers = this.lookupPeers();
+    // ...
+  }
+
+  lookupPeers() {
+    return db.lookup(this.employee, "peers");
+  }
+
+  getManagerReview() {
+    const manager = this.lookupManager();
+  }
+
+  lookupManager() {
+    return db.lookup(this.employee, "manager");
+  }
+
+  getSelfReview() {
+    // ...
+  }
+}
+
+const review = new PerformanceReview(employee);
+review.perfReview();
+```
+
+## **주석(Comments)**
+
+### 주석은 로직이 복잡하다는 것을 의미합니다.
+주석은 필수적이지 않고 사과해야 할 일입니다. 좋은 코드는 그 자체로 문서가 됩니다.
+
+**Bad:** 
+```javascript
+function hashIt(data) {
+  // The hash
+  let hash = 0;
+
+  // Length of string
+  const length = data.length;
+
+  // Loop through every character in data
+  for (let i = 0; i < length; i++) {
+    // Get character code.
+    const char = data.charCodeAt(i);
+    // Make the hash
+    hash = (hash << 5) - hash + char;
+    // Convert to 32-bit integer
+    hash &= hash;
+  }
+}
+```
+
+**Good:** 
+```javascript
+function hashIt(data) {
+  let hash = 0;
+  const length = data.length;
+
+  for (let i = 0; i < length; i++) {
+    const char = data.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+
+    // Convert to 32-bit integer
+    hash &= hash;
+  }
+}
+```
+
+### 주석으로 된 코드를 남기지 마세요
+버전 관리 도구가 존재하기 때문에 코드를 주석으로 남길 이유가 없습니다.
+
+**Bad:** 
+```javascript
+doStuff();
+// doOtherStuff();
+// doSomeMoreStuff();
+// doSoMuchStuff();
+```
+
+**Good:** 
+```javascript
+doStuff();
+```
+
+### 코드 기록을 주석으로 남기지 마세요
+버전 관리 도구를 사용하세욧!!! 죽은 코드, 불필요한 설명,  코드의 기록에 대한 주석도 필요하지 않습니다. 코드의 기록에 대해 보고 싶다면 git log를 사용하세요!
+
+**Bad:** 
+```javascript
+/**
+ * 2016-12-20: Removed monads, didn't understand them (RM)
+ * 2016-10-01: Improved using special monads (JP)
+ * 2016-02-03: Removed type-checking (LI)
+ * 2015-03-14: Added combine with type-checking (JR)
+ */
+function combine(a, b) {
+  return a + b;
+}
+```
+
+**Good:** 
+```javascript
+function combine(a, b) {
+  return a + b;
+}
+```
+
+### 코드의 위치를 설명하지 마세요
+이건 정말 쓸데 없습니다. 적절한 들여쓰기와 포맷팅을 하고 함수와 변수의 이름에 의미를 부여하세요.
+
+**Bad:** 
+```javascript
+////////////////////////////////////////////////////////////////////////////////
+// Scope Model Instantiation
+////////////////////////////////////////////////////////////////////////////////
+$scope.model = {
+  menu: "foo",
+  nav: "bar"
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Action setup
+////////////////////////////////////////////////////////////////////////////////
+const actions = function() {
+  // ...
+};
+```
+
+**Good:** 
+```javascript
+$scope.model = {
+  menu: "foo",
+  nav: "bar"
+};
+
+const actions = function() {
+  // ...
+};
+```
+
