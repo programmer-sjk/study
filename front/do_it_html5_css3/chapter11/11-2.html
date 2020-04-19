@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 + p {color: blue;}
+        h1 ~ div {color: green;}
+        a[href] { color: purple;}
+        a[target="_blank"] {color: red;}
+        [class ~= "button"] {color:brown;}
+    </style>
+</head>
+<body>
+    <h1> h1 입니다.</h1>
+    <p> 첫번째 p</p>
+    <p> 두번째 p</p>
+    <div>첫번째 div</div>
+    <div>두번째 div</div>
+    
+    <div><a>href 없음</a></div>
+    <div><a href="#">href #</a></div>
+    <div><a href="https://www.naver.com">href naver</a></div>
+    <div><a target="_blank">target blank1</a></div>
+    <div><a target="_blank">target blank2</a></div>
+
+    <div class="button">class button</div>
+    <div class="button1">class button1</div>
+    <div class="button none">class button none</div>
+    <div class="button haha">class button haha</div>
+</body>
+</html>

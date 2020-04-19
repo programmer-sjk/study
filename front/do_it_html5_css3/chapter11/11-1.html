@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        section p {color: blue;}
+        #container ul {border: 1px solid blue;}
+        #container2 > ul {border: 1px solid blue;}
+    </style>
+</head>
+<body>
+    <section id="container">
+        section text
+        <div>div text</div>
+        <p> p tag text</p>
+        <ul>
+            <li>
+                <ul>
+                    <li> 손자 1</li>
+                    <li> 손자 2</li>
+                </ul>
+            </li>
+            <li>container ul li 2</li>
+        </ul>
+    </section>
+    <section id="container2">
+        <ul>
+            <li>
+                <ul>
+                    <li> 손자 1</li>
+                    <li> 손자 2</li>
+                </ul>
+            </li>
+            <li>container ul li 2</li>
+        </ul>
+    </section>
+</body>
+</html>
