@@ -3,33 +3,29 @@ import React, {useEffect, useState} from 'react';
 const Example = () => {
     
     const [list, setList] = useState([
-        {name: 'foo1', id:1},
-        {name: 'bar2', id:2},
+        {name: '철수'},
+        {name: '영희'},
+        {name: '민수'},
     ])
 
     const addItem = () => {
-        setList([...list, {name: 'baz3', id: 3}]);
-        setTimeout(() => console.log(list), 3000)
+        setList([{name: '정국'}, ...list]);
     }
 
-    const getKey = (v, idx) => {
-        const ret = v.id === 3 && 3 || idx
-        console.log(ret)
-        return ret;
+    const delItem = () => {
+        setList(list.filter(l => l.name != "철수"));
     }
 
     return (
         <>
+            {/* 추가 버튼과 삭제 버튼*/}
             <input type="button" value="추가" onClick={addItem} />
+            <input type="button" value="삭제" onClick={delItem} />
 
-            <h2> show bad </h2>
-            {list.map((v, idx) => 
-                <div key={idx}> {v.name} <input type="text" /> </div>
-            )}
-
-            <h2> show good </h2>
-            {list.map((v) => 
-                <div key={v.id}> {v.name} <input type="text" /> </div>
+            <h2> Show Problem Example</h2>
+            {list.map((v, index) => 
+                /*  div 태그의 key로 배열의 index 사용*/
+                <div key={index}> {v.name}, idx: {index} <input type="text" /> </div> 
             )}
         </>
     )
