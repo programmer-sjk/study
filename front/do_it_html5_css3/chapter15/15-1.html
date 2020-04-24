@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-size: 36px;
+            color: blue;
+            background-color: #eee;
+        }
+
+        @media screen and (max-width:1024px) {
+            body {
+                color: green;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                color: red;
+            }
+        }
+
+        @media screen and (max-width: 320px) {
+            body {
+                color: purple;
+            }
+        }
+
+        @media screen and (orientation: landscape) {
+            body {
+                background-color: orange;
+            }
+        }
+
+        @media screen and (orientation: portrait) {
+            body {
+                background-color: yellow;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1> media query test</h1>
+</body>
+</html>
