@@ -31,3 +31,12 @@ var Var = 3;
 // var가 없으므로 호이스팅 되지 않으며 ReferenceError: noVar is not defined
 //console.log(noVar)
 //noVar = 3;
+
+
+// 첫 번째 console.log 결과는 undefined. 함수 내부의 value가 hoisting 됨
+var value = 30;  
+function hoistingExam(){  
+    console.log(value); 
+    var value = 10; 
+    console.log(value); 
+}

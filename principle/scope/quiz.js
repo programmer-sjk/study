@@ -1,28 +1,28 @@
 /* quiz about javascript hoisting */
 
-// 1.
+// Q1.
 sayHello();
 function sayHello() {
     const data = 'say hello'
     console.log(data)
 }
 
-// 2.
+// Q2.
 sayHello2()
 var sayHello2 = function() {
     console.log('say Hello')
 } 
 
 
-// 3.
+// Q3.
 console.log(Var)
 var Var = 3;
 
-// 4.
+// Q4.
 console.log(noVar)
 noVar = 3;
 
-// 5.
+// Q5.
 var double = 22;
 
 function double(num) {
@@ -31,7 +31,7 @@ function double(num) {
 
 console.log(typeof double);
 
-// 6.
+// Q6.
 
 var double2;
 
@@ -41,7 +41,7 @@ function double2(num) {
 
 console.log(typeof double2); 
 
-// 7.
+// Q7.
 function f() {
     a = 100;
     var b = 200;
@@ -51,3 +51,23 @@ f()
 
 console.log(a)
 console.log(b)
+
+// Q8.
+var value = 30;  
+function hoistingExam(){  
+    console.log(value); 
+    var value = 10; 
+    console.log(value); 
+}
+
+
+// Q9.
+var x = 1;
+
+if (true) {
+  var x = 2;
+
+  console.log(x);
+}
+
+console.log(x);
