@@ -18,5 +18,4 @@ const g = (function() {
 })();
 
 console.log(g())
-
-(() => console.log('arrow function test'))();
+console.log(a)
