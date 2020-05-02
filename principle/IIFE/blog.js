@@ -1,3 +1,10 @@
+(() => console.log('IIFE with arrow'))();
+
+(() => {
+    console.log('IIFE with arrow')
+})();
+
+
 (function() {
     console.log("I am IIFE");
 }());
@@ -43,13 +50,48 @@ console.log(b);
         console.log("I am IIFE");
 })(3);
 
+(function named(count) {
+    for(let i=0; i<count; i++)
+        console.log("I am named IIFE");
+})(3);
+
 ;(function() {
     console.log('semi')
 })();
 
 wrongFunc = function(){
 
-} // 세미콜론이 없다면 
+}; // 세미콜론이 없음
 (function() {
     console.log('semi')
 })();
+
+(function init() {
+    var operate = 'init';
+    console.log(operate)
+})()
+
+const uniqueId = (function() {
+    let count = 0;
+    return {
+        increment() {
+          ++count;
+        },
+    
+        get value() {
+          return count;
+        }
+      };
+  })();
+  
+  console.log(uniqueId()); // 1
+  console.log(uniqueId()); // 2
+
+
+  window.$ = function libraryA() {
+    
+  };
+  
+  (function($) {
+    
+  })(jQuery);
