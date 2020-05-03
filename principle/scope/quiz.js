@@ -59,7 +59,7 @@ function hoistingExam(){
     var value = 10; 
     console.log(value); 
 }
-
+ 
 
 // Q9.
 var x = 1;
