@@ -9,17 +9,29 @@ delay(100)
     })
     .then(ms => {
         console.log('2st then' + ms)
-        return new Promise(resolve => setTimeout(() => resolve(5000), 5000))
+        return new Promise(resolve => setTimeout(() => resolve(1000), 1000))
     })
     .then(ms => {
         console.log('3st then' + ms)
-        return 2 * ms
+        throw new Error('err~')
+        //return 2 * ms
     })
     .then(ms => {
         console.log('4st then' + ms)
+        return 2
+    })
+    .then(ms => {
+        console.log('5st then' + ms)
         return 2 * ms
     })
-    .catch(e => console.log(e))
+    .catch(e => {
+        console.log(e)
+        return e;
+    })
+    .then(ms => {
+        console.log('6st then' + ms)
+        return 2 * ms
+    })
 
 /*
 delay(100)
