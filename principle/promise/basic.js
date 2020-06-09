@@ -1,71 +1,37 @@
-///////// ES5 Promise /////////////
-
-var isMomHappy = true;
-var willGetNewPhone = new Promise(
-    function(resolve, reject)
-    {
-        if(isMomHappy) {
-            var phone = {
-                brand: "samsung",
-                color: "gray"
-            }
-            resolve(phone)
-        } else {
-            var reason = new Error('mom is not happy');
-            reject(reason)
-        }
-    }
- )
-
- var showOff = function(phone) {
-    var msg = 'Hey Buddy, i have a new ' + phone.color + ' ' + phone.brand + ' ' + 'phone'
-    return Promise.resolve(msg)
+// return new Promise 다양한 style
+const e1 = new Promise((resolve, reject) => resolve(1))
+const e2 = () => new Promise((resolve, reject) => resolve(1));
+const e3 = () => {
+    return new Promise((resolve, reject) => {
+        resolve(1);
+    })
+}
+const e4 = function() {
+    return new Promise((resolve, reject) => {
+        resolve(1)
+    })
 }
 
- var askMom = function() {
-     willGetNewPhone
-     .then(showOff)
-     .then(function(fullfilled) {
-         console.log(fullfilled)
-     })
-     .catch(function(error) {
-        console.log(error)
-     })
-     console.log('after asking mom')
- }
-
- askMom();
-
-
- ///////// ES6 Promise /////////////
-
-const isMomHappy = true;
-const willGetNewPhone = new Promise((resolve, reject) => {
-    if(isMomHappy) {
-        var phone = {
-            brand: "samsung",
-            color: "gray"
-        }
-        resolve(phone)
-    } else {
-        var reason = new Error('mom is not happy');
-        reject(reason)
-    }
+// p1은 함수가 아니며 즉시 Proimse객체가 반환된다.
+const p1 = new Promise((resolve, reject) => {
+    resolve(Math.ceil(Math.random() * 10));
 })
 
-const showOff = phone => {
-    var msg = 'Hey Buddy, i have a new ' + phone.color + ' ' + phone.brand + ' ' + 'phone'
-    return Promise.resolve(msg)
-}
-    
+console.log(p1) // Promise {1}
 
- var askMom = () => {
-     willGetNewPhone
-     .then(showOff)
-     .then(fullfilled => console.log(fullfilled))
-     .catch(error => console.log(error))
+// 따라서 아래와 같이 여러번 then을 쓰더라도 동일한 Promise 객체 값 결과가 return 
+p1.then(r => console.log(r))
+p1.then(r => console.log(r))
+p1.then(r => console.log(r))
 
-     console.log('after asking mom')
- }
+// p2는 함수
+const p2 = () => new Promise((resolve, reject) => {
+    resolve(Math.ceil(Math.random() * 10));
+})
 
- askMom();
+// 따라서 여러번 then을 쓸 경우 서로 다른 Promise 객체 값 return
+p2().then(r => console.log(r))
+p2().then(r => console.log(r))
+p2().then(r => console.log(r))
+
+

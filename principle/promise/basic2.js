@@ -1,22 +1,25 @@
+// Promise.reject, Promise.resolve는 Promise 객체를 반환
 
+const reject = Promise.reject('err')
+const resolve = Promise.resolve('success')
 
-//const p = Promise.reject('err')
-//const p = Promise.resolve('success')
-//p.then(r => console.log('then: ' + r))
-//.catch(e => console.log('error: ' + e))
+console.log(reject) // Promise { <rejected> 'err' }
+console.log(resolve)// Promise { 'success' }
+reject.catch(e => console.log(e))
 
 const momPromise = new Promise((resolve, reject) => {
     const momSavings = 200000;
     const priceOfPhone = 100000;
-    if(momSavings >= priceOfPhone) {
+    if(momSavings < priceOfPhone) {
         resolve('mom buy phone')
     } else {
         reject('mom cant buy phone')
     }
 })
 
+// Promise 객체에 then, catch, finally가 올수 있다. finally는 성공하든 실패하든 실행
 momPromise
-.then(r => console.log(r))
-.catch(e => console.log(e))
-.finally(() => console.log('mom buy phone or not, i love her'))
+    .then(r => console.log(r))
+    .catch(e => console.log(e))
+    .finally(() => console.log('mom buy phone or not, i love her'))
 
