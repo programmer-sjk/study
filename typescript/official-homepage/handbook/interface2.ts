@@ -35,3 +35,5 @@ let someValue: any = "this is a string";
 
 let strLength: number = someValue.length;
 console.log(strLength)
+
+let bool = true;
