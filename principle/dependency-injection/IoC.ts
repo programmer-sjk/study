@@ -1,7 +1,8 @@
 class A {
     b: B;
     constructor() {
-        this.b = new B()
+        //this.b = new B()
+        this.b = Factory.GetObjectOfB();
     }
 
     public task1() {
@@ -22,3 +23,4 @@ class Factory {
 }
 
 new A().task1()
+
