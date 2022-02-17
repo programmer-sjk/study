@@ -3,6 +3,10 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) {
         Class<Book> b = Book.class;
+
+        Arrays.stream(b.getAnnotations()).forEach(System.out::println);
+        System.out.println();
+
         Arrays.stream(b.getFields()).forEach(System.out::println);
         Arrays.stream(b.getDeclaredFields()).forEach(System.out::println);
 

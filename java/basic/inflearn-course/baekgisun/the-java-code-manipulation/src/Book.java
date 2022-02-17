@@ -1,4 +1,8 @@
+import java.lang.annotation.Inherited;
+
+@MyAnnotation()
 public class Book {
+    @MyAnnotation
     public int a;
     private String b;
 
