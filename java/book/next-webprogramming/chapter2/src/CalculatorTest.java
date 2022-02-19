@@ -1,25 +1,35 @@
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CalculatorTest {
-    public static void main(String[] args) {
-        Calculator c = new Calculator();
-        add(c);
-        subtract(c);
-        multiply(c);
-        divide(c);
+    private Calculator c;
+
+    @BeforeAll
+    public void setUp() {
+        c = new Calculator();
+        System.out.println("Before all");
     }
 
-    private static void add(Calculator c) {
-        System.out.println(c.add(1,2));
+    @AfterAll
+    public void teardown() {
+        System.out.println("After all");
     }
 
-    private static void subtract(Calculator c) {
-        System.out.println(c.subtract(1,2));
+    @Test
+    public void add() {
+        System.out.println("add");
+        assertEquals(3, c.add(1,2));
     }
 
-    private static void multiply(Calculator c) {
-        System.out.println(c.multiply(1,2));
-    }
-    private static void divide(Calculator c) {
-        System.out.println(c.divide(1,2));
+    @Test
+    public void subtract() {
+        System.out.println("subtract");
+        assertEquals(8, c.subtract(10,2));
     }
 
 }
