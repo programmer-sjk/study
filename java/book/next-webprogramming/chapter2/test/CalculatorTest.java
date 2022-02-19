@@ -1,7 +1,7 @@
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+package test;
+
+import calculator.Calculator;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,13 +23,13 @@ public class CalculatorTest {
     @Test
     public void add() {
         System.out.println("add");
-        assertEquals(3, c.add(1,2));
+        Assertions.assertEquals(3, c.add(1,2));
     }
 
     @Test
     public void subtract() {
         System.out.println("subtract");
-        assertEquals(8, c.subtract(10,2));
+        Assertions.assertEquals(8, c.subtract(10,2));
     }
 
 }

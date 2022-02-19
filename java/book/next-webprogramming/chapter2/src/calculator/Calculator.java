@@ -1,9 +1,11 @@
+package calculator;
+
 public class Calculator {
-    int add(int a, int b) {
+    public int add(int a, int b) {
         return a + b;
     }
 
-    int subtract(int a, int b) {
+    public int subtract(int a, int b) {
         return a - b;
     }
 
