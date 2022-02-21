@@ -1,8 +1,6 @@
 package calculator;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.lang.Integer.*;
 
@@ -14,25 +12,36 @@ public class StringCalculator {
         System.out.println(ret);
     }
 
-    private static int add(String s) {
-        if (s.isEmpty()) {
+    public static int add(String s) {
+        if (isBlank(s)) {
             return 0;
         }
 
-        String[] arr = s.split(",|:");
+        return sumByArrays(toPositive(split(s)));
+    }
 
-        return sumByArrays(arr);
+    private static boolean isBlank(String s) {
+        return s == null || s.isEmpty();
+    }
+
+    private static String[] split(String s) {
+        return s.split(",|:");
+    }
+
+    private static int[] toPositive(String[] s) {
+        int[] numbers = new int[s.length];
+        for(int i = 0; i < numbers.length; i++) {
+            numbers[i] = parseInt(s[i]);
+        }
+        return numbers;
     }
 
 
-    private static int sumByArrays(String[] arr) {
+    private static int sumByArrays(int[] arr) {
         int sum = 0;
-        for (String el : arr) {
-            try {
-                int i = parseInt(el);
-                if (i < 0) throw new RuntimeException();
-                sum += i;
-            } catch(NumberFormatException e) {}
+        for (int el : arr) {
+            if (el < 0) throw new RuntimeException();
+            sum += el;
         }
         return sum;
     }
