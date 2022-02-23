@@ -29,3 +29,12 @@
  * Good
  * var startMs = (new Date()).getTime();
  */
+
+/**
+ * 이름은 얼마나 길어야 하는가?
+ ** 좁은 범위에서는 짧은 이름도 괜찮다.
+ ** 불 필요한 단어 제거하기
+ *** convertToString() -> toString() 이여도 실질적인 의미는 사라지지 않는다.
+ *** DoServerLoop() -> ServerLoop() 여도 실질적인 의미는 사라지지 않는다.
+ ***
+ */
