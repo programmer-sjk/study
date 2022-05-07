@@ -1,9 +1,6 @@
 
 fun main() {
-    checkSum(0)
-    checkSum(2)
-    checkSum(5)
-
+    nullCheck()
 }
 
 // 함수
@@ -50,4 +47,64 @@ fun checkSum(score: Int) {
         2,3 -> println("this is 2,3")
         else -> println("i dont know")
     }
+
+    when(score) {
+        in 90..100 -> println("you are genius")
+        in 10..80 -> println("you need genius")
+        else -> println("okay")
+    }
+}
+
+// array vs list
+fun array() {
+    val arr = arrayOf(1,2,3)
+    val list = listOf(1,2,3)
+    arr[0] = 10;
+    // list[0] = 10; (x) cause immutable
+
+    val arrList = arrayListOf<Int>()
+    arrList.add(1)
+    arrList.add(2)
+}
+
+// for
+fun forFun() {
+    val names = arrayListOf<String>("꾸기", "차밍", "우주", "라비", "리온")
+    for(name in names) {
+        println(name)
+    }
+
+    for((index, name) in names.withIndex()) {
+        println("${index+1}학생의 이름은 ${name}")
+    }
+
+    var sum: Int = 0;
+    for(i in 1..10) {
+        sum += i
+    }
+    println(sum)
+
+    for(i in 1 until 5) {
+        println("5보다 작은 4까지 돔")
+    }
+}
+
+// nullable or non-null
+fun nullCheck() {
+    var name: String = "꾸기"
+    var nullName: String? = null;
+
+    var upperName = name.uppercase()
+    var upperNullName = nullName?.uppercase()
+
+    // ?:
+    var lastName: String? = null
+    var fullName = "${name} ${lastName ?: "noName"}"
+    println(fullName)
+    lastName = "서"
+    fullName = "${name} ${lastName ?: "noName"}"
+    println(fullName)
+
+    //!!
+    
 }
